@@ -40,7 +40,12 @@ const Extras = () => {
                     <button className="btn-secondary" onClick={() => setEditing(e)}>
                       <Pencil size={16} />
                     </button>
-                    <button className="btn-secondary" onClick={() => deleteExtra(e.id)}>
+                    <button
+                      className="btn-secondary"
+                      onClick={async () => {
+                        await deleteExtra(e.id);
+                      }}
+                    >
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -53,8 +58,8 @@ const Extras = () => {
 
       <Modal open={open} title="Novo valor extra" onClose={() => setOpen(false)}>
         <FormExtra
-          onSubmit={(payload) => {
-            addExtra(payload);
+          onSubmit={async (payload) => {
+            await addExtra(payload);
             setOpen(false);
           }}
         />
@@ -64,8 +69,8 @@ const Extras = () => {
         {editing ? (
           <FormExtra
             initial={editing}
-            onSubmit={(payload) => {
-              updateExtra(editing.id, payload);
+            onSubmit={async (payload) => {
+              await updateExtra(editing.id, payload);
               setEditing(null);
             }}
           />

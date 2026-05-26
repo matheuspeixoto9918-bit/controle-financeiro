@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useFinance } from "../hooks/useFinance";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
-  const { loadSeedData } = useFinance();
   const navigate = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
@@ -35,9 +33,6 @@ const Login = () => {
             Entrar
           </button>
         </form>
-        <button className="btn-secondary mt-3 w-full" onClick={loadSeedData}>
-          Carregar dados de exemplo
-        </button>
         <p className="mt-4 text-sm">
           Sem conta?{" "}
           <Link className="font-semibold text-emerald-700" to="/cadastro">

@@ -52,7 +52,12 @@ const Gastos = () => {
                     <button className="btn-secondary" onClick={() => setEditing(g)}>
                       <Pencil size={16} />
                     </button>
-                    <button className="btn-secondary" onClick={() => deleteGasto(g.id)}>
+                    <button
+                      className="btn-secondary"
+                      onClick={async () => {
+                        await deleteGasto(g.id);
+                      }}
+                    >
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -65,8 +70,8 @@ const Gastos = () => {
 
       <Modal open={open} title="Novo gasto" onClose={() => setOpen(false)}>
         <FormGasto
-          onSubmit={(payload) => {
-            addGasto(payload);
+          onSubmit={async (payload) => {
+            await addGasto(payload);
             setOpen(false);
           }}
         />
@@ -75,8 +80,8 @@ const Gastos = () => {
         {editing ? (
           <FormGasto
             initial={editing}
-            onSubmit={(payload) => {
-              updateGasto(editing.id, payload);
+            onSubmit={async (payload) => {
+              await updateGasto(editing.id, payload);
               setEditing(null);
             }}
           />

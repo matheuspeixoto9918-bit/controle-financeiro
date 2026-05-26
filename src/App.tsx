@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import Sidebar from "./components/Sidebar";
+import SupabaseGuard from "./components/SupabaseGuard";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Dashboard from "./pages/Dashboard";
@@ -19,27 +20,27 @@ const PrivateLayout = ({ children }: { children: React.ReactNode }) => (
 const App = () => {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
-    return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    );
-  }
-
   return (
-    <PrivateLayout>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/gastos" element={<Gastos />} />
-        <Route path="/extras" element={<Extras />} />
-        <Route path="/historico" element={<Historico />} />
-        <Route path="/configuracoes" element={<Configuracoes />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </PrivateLayout>
+    <SupabaseGuard>
+      {!isAuthenticated ? (
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      ) : (
+        <PrivateLayout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/gastos" element={<Gastos />} />
+            <Route path="/extras" element={<Extras />} />
+            <Route path="/historico" element={<Historico />} />
+            <Route path="/configuracoes" element={<Configuracoes />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </PrivateLayout>
+      )}
+    </SupabaseGuard>
   );
 };
 

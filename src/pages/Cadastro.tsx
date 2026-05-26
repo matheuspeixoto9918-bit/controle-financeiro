@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useFinance } from "../hooks/useFinance";
 
 const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [useSeed, setUseSeed] = useState(true);
   const [error, setError] = useState("");
   const { register } = useAuth();
-  const { loadSeedData } = useFinance();
   const navigate = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
@@ -19,7 +18,7 @@ const Cadastro = () => {
     if (password.length < 6) return setError("A senha deve ter no mínimo 6 caracteres.");
     if (password !== confirm) return setError("As senhas não coincidem.");
     try {
-      await register({ email, password });
+      await register({ email, password, loadExampleData: useSeed });
       navigate("/");
     } catch (err) {
       setError((err as Error).message);
@@ -42,18 +41,14 @@ const Cadastro = () => {
             onChange={(e) => setConfirm(e.target.value)}
           />
           {error ? <p className="text-sm text-rose-600">{error}</p> : null}
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <input type="checkbox" checked={useSeed} onChange={(e) => setUseSeed(e.target.checked)} />
+            Carregar dados de exemplo ao criar conta
+          </label>
           <button className="btn-primary w-full" type="submit">
             Criar conta
           </button>
         </form>
-        <button
-          className="btn-secondary mt-3 w-full"
-          onClick={() => {
-            loadSeedData();
-          }}
-        >
-          Carregar dados de exemplo
-        </button>
         <p className="mt-4 text-sm">
           Já tem conta?{" "}
           <Link className="font-semibold text-emerald-700" to="/login">

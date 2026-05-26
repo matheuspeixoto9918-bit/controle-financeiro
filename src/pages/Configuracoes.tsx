@@ -20,9 +20,9 @@ const Configuracoes = () => {
         <input className="input" value={salario} onChange={(e) => setSalario(e.target.value)} />
         <button
           className="btn-primary"
-          onClick={() => {
+          onClick={async () => {
             const v = Number(salario.replace(",", "."));
-            if (!Number.isNaN(v)) updateSalario(v);
+            if (!Number.isNaN(v)) await updateSalario(v);
           }}
         >
           Salvar salario
@@ -33,9 +33,9 @@ const Configuracoes = () => {
         <input className="input" value={extra} onChange={(e) => setExtra(e.target.value)} />
         <button
           className="btn-primary"
-          onClick={() => {
+          onClick={async () => {
             const v = Number(extra.replace(",", "."));
-            if (!Number.isNaN(v)) updateValorExtraBase(v);
+            if (!Number.isNaN(v)) await updateValorExtraBase(v);
           }}
         >
           Salvar valor extra
@@ -45,7 +45,12 @@ const Configuracoes = () => {
         <p className="text-sm text-slate-500">Valores atuais</p>
         <p className="mt-2 text-sm">Salario: {formatBRL(data?.salario ?? 0)}</p>
         <p className="text-sm">Valor extra base: {formatBRL(data?.valorExtraBase ?? 0)}</p>
-        <button className="btn-secondary mt-3" onClick={loadSeedData}>
+        <button
+          className="btn-secondary mt-3"
+          onClick={async () => {
+            await loadSeedData();
+          }}
+        >
           Recarregar dados de exemplo
         </button>
       </div>

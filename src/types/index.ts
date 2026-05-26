@@ -12,12 +12,7 @@ export type StatusGasto = "pago" | "pendente";
 export interface User {
   id: string;
   email: string;
-  passwordHash: string;
   createdAt: string;
-}
-
-export interface Session {
-  userId: string;
 }
 
 export interface Gasto {
